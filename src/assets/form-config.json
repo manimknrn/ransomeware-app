@@ -1,0 +1,69 @@
+{
+  "fields": [
+    {
+      "type": "input",
+      "label": "Name",
+      "name": "name",
+      "inputType": "text",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Name is required"
+        }
+      ]
+    },
+    {
+      "type": "input",
+      "label": "Extensions",
+      "name": "extensions",
+      "inputType": "text",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Extensions is required"
+        }
+      ]
+    },
+    {
+      "type": "input",
+      "label": "Extension Pattern",
+      "name": "extensionPattern",
+      "inputType": "text",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Extension Pattern is required"
+        }
+      ]
+    },
+    {
+      "type": "input",
+      "label": "Ransom Note File Names",
+      "name": "ransomNoteFilenames",
+      "inputType": "text",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Ransom Note File Names is required"
+        }
+      ]
+    },
+    {
+      "type": "input",
+      "label": "Comment",
+      "name": "comment",
+      "inputType": "text",
+      "validations": [
+        {
+          "name": "required",
+          "validator": "required",
+          "message": "Comment is required"
+        }
+      ]
+    }
+  ]
+}

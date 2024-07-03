@@ -1,0 +1,60 @@
+@if(form) {
+<form [formGroup]="form" class="form-field">
+    @for (field of formConfig.fields; track field) {
+    <div>
+
+        <!-- Input fields -->
+        @if(field.type === 'input') {
+        <mat-form-field class="full-width">
+            <mat-label>{{field.label}}</mat-label>
+            <input matInput [formControlName]="field.name" [type]="field.inputType">
+            @if(form.get(field.name)?.invalid) {
+            <mat-error>{{getErrorMessage(field)}}</mat-error>
+            }
+        </mat-form-field>
+        }
+
+        <!-- Dropdown -->
+        @if(field.type === 'select') {
+        <mat-form-field class="full-width">
+            <mat-label>{{field.label}}</mat-label>
+            <mat-select [formControlName]="field.name">
+                @for (option of field.options; track option.name) {
+                <mat-option [value]="option.key">{{option.label}}</mat-option>
+                }
+            </mat-select>
+            @if(form.get(field.name)?.invalid) {
+            <mat-error>{{getErrorMessage(field)}}</mat-error>
+            }
+        </mat-form-field>
+        }
+
+        <!-- Radio Button Groups -->
+        @if(field.type === 'plans') {
+        <label>{{field.label}}</label>
+        <mat-radio-group [formControlName]="field.name" class="radio">
+            @for (option of field.options; track option.label) {
+            <mat-card>
+                <mat-card-header>
+                    <mat-card-title><mat-radio-button
+                            [value]="option.label"></mat-radio-button>{{option.label}}</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    @for (details of option.options; track details.label) {
+                    <div class="radio_options">
+                        <nav>{{details.label}}</nav>
+                        <nav>{{details.value}}</nav>
+                    </div>
+                    }
+                </mat-card-content>
+            </mat-card>
+            }
+        </mat-radio-group>
+        @if(form.get(field.name)?.invalid) {
+        <mat-error>{{getErrorMessage(field.name)}}</mat-error>
+        }
+        }
+    </div>
+    }
+</form>
+}
