@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DynamicFormComponent } from '../../shared/components/dynamic-form/dynamic-form.component';
 import { MatCardModule } from '@angular/material/card';
@@ -11,7 +11,8 @@ import { FormConfigService } from '../../services/form-config.service';
   standalone: true,
   imports: [CommonModule, DynamicFormComponent, MatCardModule],
   templateUrl: './register-customer.component.html',
-  styleUrl: './register-customer.component.scss'
+  styleUrl: './register-customer.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RegisterCustomerComponent {
 
@@ -26,15 +27,12 @@ export class RegisterCustomerComponent {
     this.formConfigService.getFormConfig().subscribe((config: any) => {
       this.formConfig = config;
     });
+    const navigation = this.router.getCurrentNavigation();
+    this.customerId = navigation?.extras.state?.['data'];
+    this.isEditMode = !!this.customerId;
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      if (params['id']) {
-        this.customerId = params['id'];
-        this.isEditMode = true;
-      }
-    });
   }
 
   ngAfterViewInit(): void {
@@ -48,7 +46,7 @@ export class RegisterCustomerComponent {
     if (this.dynamicFormComponent.form.valid) {
       const formData = this.dynamicFormComponent.form.value;
       formData.registrationDate = new Date().toISOString().split('T')[0];
-      if (this.isEditMode) {
+      if (this.isEditMode && this.customerId) {
         // Update existing customer
         console.info('Updating customer:', formData);
       } else {
@@ -58,21 +56,11 @@ export class RegisterCustomerComponent {
           console.error('Error registering customer', error);
         })
       }
-      this.router.navigate(['/manage-customers']);
+      this.router.navigate(['/manage-ransomware']);
     }
   }
 
-  loadCustomerData(id: number): void {
-    // Mock customer data; replace with a service call
-    const customerData = {
-      name: 'John Doe',
-      dob: '1990-01-01',
-      email: 'amit.singh@example.com',
-      aadharNumber: '123456789012',
-      registrationDate: '2020-01-01',
-      assignedMobileNumber: '9876543210',
-      plan: 'Gold180'
-    };
-    this.dynamicFormComponent.patchFormValues(customerData);
+  loadCustomerData(data: any): void {
+    this.dynamicFormComponent.patchFormValues(data);
   }
 }

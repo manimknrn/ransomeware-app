@@ -53,8 +53,8 @@ export class ManageCustomersComponent implements OnInit {
     ];
 
     this.buttons = [
-      { styleClass: 'submit', icon: 'edit', payload: (element: Customer) => `${element.name}`, action: 'edit', tooltip: 'Edit', enable: true },
-      { styleClass: 'submit', icon: 'delete', payload: (element: Customer) => `${element.name}`, action: 'delete', tooltip: 'Delete', enable: true },
+      { styleClass: 'submit', icon: 'edit', payload: (element: Customer) => `${element.id}`, action: 'edit', tooltip: 'Edit', enable: true },
+      { styleClass: 'submit', icon: 'delete', payload: (element: Customer) => `${element.id}`, action: 'delete', tooltip: 'Delete', enable: true },
     ]
 
     this.actionHeader = 'Register Ransomware';
@@ -65,8 +65,15 @@ export class ManageCustomersComponent implements OnInit {
 
   render(value: any, searchFilter?: string) {
     this.customerService.getCustomers().subscribe((res: any) => {
-      this.data = !!res ? this.removeDuplicates(res.data) : [];
+      let data = !!res ? this.removeDuplicates(res.data) : [];
+      this.data = this.addIds(data);
       this.totalDataCount = res.data.length;
+    });
+  }
+
+  addIds(data: any[]): any[] {
+    return data.map((item, index) => {
+      return { id: item._id || index, ...item };
     });
   }
 
@@ -96,19 +103,21 @@ export class ManageCustomersComponent implements OnInit {
   }
 
   deleteCustomer(id: number): void {
-    // this.data = this.data.filter(customer => customer.name !== name); //this is just to show the removal as mock
-    this.customerService.registerCustomer(id).subscribe(response => {
-      console.info(`Customer with id ${id} deleted.`, response);
+    const formData = this.data.find(res => res.id === id);
+    this.data = this.data.filter(customer => customer.id !== id); //this is just to show the removal as mock
+    this.customerService.deleteCustomer(id, formData).subscribe(response => {
+      console.info(`Customer with id ${formData} deleted.`, response);
     }, error => {
       console.error('Error while removing customer', error);
     })
   }
 
   editCustomer(id: number): void {
-    this.router.navigate([`/register-customer`, id]);
+    const formData = this.data.find(res => res.id === id);
+    this.router.navigate([`/register-ransomware`], { state: { data: formData } });
   }
 
   actionFeature(event: any) {
-    this.router.navigateByUrl('/register-customer');
+    this.router.navigateByUrl('/register-ransomware');
   }
 }
