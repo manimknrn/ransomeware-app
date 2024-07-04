@@ -205,7 +205,7 @@ describe('RegisterCustomerComponent', () => {
       "iocs": "https://otx.alienvault.com/pulse/57180b18c1492d015c14bed8/",
       "snort": ""
     });
-    expect(component.router.navigate).toHaveBeenCalledWith(['/manage-customers']);
+    expect(component.router.navigate).toHaveBeenCalledWith(['/manage-ransomware']);
   }));
 });
 

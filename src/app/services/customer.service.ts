@@ -15,12 +15,12 @@ export class CustomerService {
     return this.http.post<Customer>(this.apiUrl, customerId);
   }
 
-  delete(id: string, planData: any): Observable<Customer> {
-    return this.http.post<Customer>(`${this.apiUrl}/${id}/`, planData);
+  deleteCustomer(id: number, data: any): Observable<Customer> {
+    return this.http.post<Customer>(`${this.apiUrl}/${id}/`, data);
   }
 
-  updateCustomerPlan(id: string, planData: any): Observable<Customer> {
-    return this.http.post<Customer>(`${this.apiUrl}/${id}/`, planData);
+  updateCustomer(id: number, data: any): Observable<Customer> {
+    return this.http.post<Customer>(`${this.apiUrl}/${id}/`, data);
   }
 
   getCustomers(): Observable<Customer[]> {
